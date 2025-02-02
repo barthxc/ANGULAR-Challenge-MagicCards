@@ -1,0 +1,12 @@
+<search-cards-form></search-cards-form>
+
+<div *ngIf="isLoading; else notLoading">
+  <loading />
+</div>
+
+<ng-template #notLoading>
+  <div class="page-info">
+    <p>otros datos.</p>
+  </div>
+  <div class="card-list"></div>
+</ng-template>
