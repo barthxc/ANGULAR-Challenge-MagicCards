@@ -1,0 +1,19 @@
+<div *ngIf="isOnlyCard; else cardArray">
+  <!-- CARTA SOLITARIA -->
+</div>
+
+<ng-template #cardArray>
+  <!-- CARTA PREPARADA PARA ESTAR EN GRUPO -->
+  <div class="card">
+    <img
+      [src]="card.imageUrl"
+      [alt]="card.name"
+      [routerLink]="['/card', card.id]"
+    />
+    <div class="info">
+      <p>{{ card.subtypes }}</p>
+      <p>{{ card.type }}</p>
+      <p>{{ card.setName }}</p>
+    </div>
+  </div>
+</ng-template>

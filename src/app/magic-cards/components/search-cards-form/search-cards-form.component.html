@@ -1,4 +1,44 @@
-<form>
-  <label for="">Name</label>
-  <input type="text" name="" id="" />
-</form>
+<div class="form-container separator">
+  <form [formGroup]="myForm">
+    <div>
+      <input
+        formControlName="name"
+        class="name"
+        type="text"
+        placeholder="Search cards..."
+      />
+    </div>
+    <div>
+      <select formControlName="colorIdentity" class="color" name="">
+        <option value="" selected>COLOR</option>
+        <option *ngFor="let color of colors" [value]="color">
+          {{ color }}
+        </option>
+      </select>
+    </div>
+    <div>
+      <input
+        formControlName="cmc"
+        class="mana"
+        type="number"
+        placeholder="CMC"
+        min="0"
+      />
+    </div>
+    <div>
+      <select formControlName="order" class="order">
+        <option value="" selected>ORDER</option>
+        <option value="DESC" selected>DESC</option>
+        <option value="ASC">ASC</option>
+      </select>
+    </div>
+    <button *ngIf="needApi" type="submit">submit</button>
+    <button (click)="reset()">reset</button>
+  </form>
+
+  <span></span>
+</div>
+
+<div class="count separator">
+  <span class="">{{ cards.length }} de {{ totalCount }}</span>
+</div>

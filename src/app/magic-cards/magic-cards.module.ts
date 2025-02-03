@@ -8,7 +8,9 @@ import { CardsByIdPageComponent } from './pages/cards-by-id-page/cards-by-id-pag
 import { SearchCardsFormComponent } from './components/search-cards-form/search-cards-form.component';
 import { MagicsCardsLayoutComponent } from './layout/magics-cards-layout/magics-cards-layout.component';
 import { LoadingComponent } from './components/loading/loading.component';
-
+import { MenuComponent } from './components/menu/menu.component';
+import { CardComponent } from './components/card/card.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,11 +19,10 @@ import { LoadingComponent } from './components/loading/loading.component';
     CardsByIdPageComponent,
     SearchCardsFormComponent,
     MagicsCardsLayoutComponent,
-    LoadingComponent
+    LoadingComponent,
+    MenuComponent,
+    CardComponent,
   ],
-  imports: [
-    CommonModule,
-    MagicCardsRoutingModule
-  ]
+  imports: [CommonModule, MagicCardsRoutingModule, ReactiveFormsModule],
 })
-export class MagicCardsModule { }
+export class MagicCardsModule {}

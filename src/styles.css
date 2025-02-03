@@ -1,1 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
+/**Normalización**/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f5f6f8;
+}
+
+/*TODO: evualuate*/
+/* .container {
+  padding: 0rem 5rem 0rem 5rem;
+} */

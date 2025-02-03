@@ -37,6 +37,7 @@ export interface Card {
 export enum Color {
   U = 'U',
   W = 'W',
+  R = 'R',
 }
 
 export interface ForeignName {

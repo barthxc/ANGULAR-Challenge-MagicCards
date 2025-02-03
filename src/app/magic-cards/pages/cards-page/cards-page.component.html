@@ -1,12 +1,20 @@
-<search-cards-form></search-cards-form>
+<div class="container">
+  <search-cards-form
+    [cards]="cards"
+    [totalCount]="totalCount"
+  ></search-cards-form>
 
-<div *ngIf="isLoading; else notLoading">
-  <loading />
-</div>
-
-<ng-template #notLoading>
-  <div class="page-info">
-    <p>otros datos.</p>
+  <div *ngIf="isLoading; else notLoading">
+    <loading />
   </div>
-  <div class="card-list"></div>
-</ng-template>
+
+  <ng-template class="card-content" #notLoading>
+    <div class="card-list">
+      <card
+        *ngFor="let card of cards"
+        [isOnlyCard]="false"
+        [card]="card"
+      ></card>
+    </div>
+  </ng-template>
+</div>

@@ -1,7 +1,7 @@
+import { Card } from './../../interfaces/CardsResponse.internface';
 import { Component, OnInit } from '@angular/core';
 import { CardsService } from '../../services/cards.service';
 import { LoadingService } from '../../services/loading.service';
-import { Card, CardsResponse } from '../../interfaces/CardsResponse.internface';
 
 @Component({
   templateUrl: './cards-page.component.html',
@@ -13,14 +13,20 @@ export class CardsPageComponent implements OnInit {
     private loadingService: LoadingService
   ) {}
 
-  public cards!: CardsResponse;
-
+  public cards: Card[] = [];
+  public totalCount!: string | null;
   public isLoading: boolean = false;
+
   ngOnInit(): void {
+    this.cardsService
+      .getCardsWithImages(100)
+      .subscribe(({ cards, totalCount }) => {
+        this.cards = cards;
+        this.totalCount = totalCount;
+      });
+
     this.loadingService.isLoading$.subscribe((loading) => {
       this.isLoading = loading;
     });
-
-    this.cardsService.getCards();
   }
 }
