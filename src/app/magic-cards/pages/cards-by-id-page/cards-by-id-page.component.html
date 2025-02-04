@@ -15,7 +15,10 @@
           </p>
         </div>
         <div class="languaje-button">
-          <button *ngFor="let item of card.foreignNames">
+          <button
+            (click)="selectLanguaje(item.language)"
+            *ngFor="let item of card.foreignNames"
+          >
             {{ item.language | uppercase | slice : 0 : 2 }}
           </button>
         </div>

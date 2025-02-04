@@ -33,6 +33,7 @@ export class SearchCardsFormComponent implements OnInit {
 
     // Capturar el evento valueChanges
     this.myForm.valueChanges.subscribe((changes) => {
+      //!!! Le paso al padre solo los filtros. Que el padre o el servicio maneje la lógica de negocio
       this.cardsService
         .filterCards(this.myForm.value)
         .subscribe((filteredCards) => {

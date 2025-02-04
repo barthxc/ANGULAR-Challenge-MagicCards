@@ -19,6 +19,17 @@ export class CardsByIdPageComponent implements OnInit {
   public isLoading!: boolean;
   public card!: Card;
 
+  selectLanguaje(algo: any) {
+    console.log('algo', algo);
+    console.log(this.card.foreignNames);
+    let lng = this.card.foreignNames!.find((test) => test.language === algo);
+
+    console.log('lgn', lng);
+
+    this.card.name = lng!.name;
+    this.card.text = lng!.text;
+  }
+
   ngOnInit(): void {
     this.loadingService.isLoading$.subscribe((isLoading) => {
       this.isLoading = isLoading;
