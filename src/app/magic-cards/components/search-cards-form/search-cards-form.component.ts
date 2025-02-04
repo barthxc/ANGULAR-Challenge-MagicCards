@@ -1,8 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Card, Color } from '../../interfaces/CardsResponse.internface';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { CardsService } from '../../services/cards.service';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'search-cards-form',
@@ -13,9 +12,10 @@ export class SearchCardsFormComponent implements OnInit {
   constructor(private fb: FormBuilder, private cardsService: CardsService) {}
   @Input() cards: Card[] = [];
   @Input() totalCount: string | null = '0';
+  @Input() backupCards: Card[] = [];
+  @Output() filteredCards = new EventEmitter<Card[]>();
 
   colors = Object.values(Color);
-  filteredCards: Card[] = [];
 
   public needApi: boolean = false;
 
@@ -32,8 +32,12 @@ export class SearchCardsFormComponent implements OnInit {
     });
 
     // Capturar el evento valueChanges
-    this.myForm.valueChanges.subscribe(() => {
-      this.cardsService.filterCards(this.myForm.value);
+    this.myForm.valueChanges.subscribe((changes) => {
+      this.cardsService
+        .filterCards(this.myForm.value)
+        .subscribe((filteredCards) => {
+          this.filteredCards.emit(filteredCards);
+        });
     });
 
     // this.myForm
@@ -43,14 +47,41 @@ export class SearchCardsFormComponent implements OnInit {
     //     console.log(this.myForm.value);
     //     //ejecución del filtrado
     //   });
+
+    //! forma
+    // .pipe(
+    //   startWith(this.myForm.value), // Emite el valor inicial del formulario
+    //   pairwise(), // Compara el valor anterior con el valor actual
+    //   debounce(([previous, current]) => {
+    //     // Aplica debounce solo si el valor de 'name' ha cambiado
+    //     console.log(
+    //       previous.name !== current.name
+    //         ? 'ha cambiado y te meto timer'
+    //         : 'busco de una'
+    //     );
+    //     return previous.name !== current.name ? timer(5000) : timer(0);
+    //   })
+    // )
+  }
+
+  searchCards() {
+    this.cardsService
+      .getCards(this.myForm.value, true)
+      .subscribe(({ cards, totalCount }) => {
+        this.cards = cards;
+        this.totalCount = totalCount;
+        this.filteredCards.emit(cards);
+      });
   }
 
   reset(): void {
     this.myForm.reset({
-      name: [''],
-      colorIdentity: [''],
-      cmc: [''],
-      order: [''],
+      name: '',
+      cmc: '',
+      colorIdentity: '',
+      order: '',
     });
+
+    this.filteredCards.emit(this.backupCards);
   }
 }

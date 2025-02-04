@@ -16,17 +16,22 @@ export class CardsPageComponent implements OnInit {
   public cards: Card[] = [];
   public totalCount!: string | null;
   public isLoading: boolean = false;
+  public needApi!: boolean;
+  public backupCards: Card[] = [];
 
   ngOnInit(): void {
-    this.cardsService
-      .getCardsWithImages(100)
-      .subscribe(({ cards, totalCount }) => {
-        this.cards = cards;
-        this.totalCount = totalCount;
-      });
+    this.cardsService.getCards().subscribe(({ cards, totalCount }) => {
+      this.cards = cards;
+      this.backupCards = cards;
+      this.totalCount = totalCount;
+    });
 
     this.loadingService.isLoading$.subscribe((loading) => {
       this.isLoading = loading;
+    });
+
+    this.cardsService.needApi$.subscribe((needApi) => {
+      this.needApi = needApi;
     });
   }
 }

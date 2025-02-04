@@ -1,14 +1,38 @@
 <div *ngIf="isOnlyCard; else cardArray">
-  <!-- CARTA SOLITARIA -->
+  <div class="all-card-container">
+    <div class="card">
+      <img [src]="card.imageUrl" [alt]="card.name" />
+      <div class="info">
+        <p>{{ card.subtypes }}</p>
+        <p>{{ card.type }}</p>
+        <p>{{ card.setName }}</p>
+      </div>
+    </div>
+
+    <div class="data">
+      <p class="separator">
+        {{ card.name }}
+      </p>
+      <p class="separator">
+        {{ card.name }}
+      </p>
+      <p class="separator">
+        {{ card.text }}
+      </p>
+      <p class="separator" id="ilustrator">Illustrated by {{ card.artist }}</p>
+
+      <legal-formats [legalities]="card.legalities"></legal-formats>
+    </div>
+  </div>
 </div>
 
 <ng-template #cardArray>
   <!-- CARTA PREPARADA PARA ESTAR EN GRUPO -->
-  <div class="card">
+  <div>
     <img
       [src]="card.imageUrl"
       [alt]="card.name"
-      [routerLink]="['/card', card.id]"
+      [routerLink]="['/cards', card.id]"
     />
     <div class="info">
       <p>{{ card.subtypes }}</p>

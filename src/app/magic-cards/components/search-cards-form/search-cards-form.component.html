@@ -1,5 +1,5 @@
 <div class="form-container separator">
-  <form [formGroup]="myForm">
+  <form [formGroup]="myForm" (submit)="searchCards()">
     <div>
       <input
         formControlName="name"
@@ -32,8 +32,10 @@
         <option value="ASC">ASC</option>
       </select>
     </div>
-    <button *ngIf="needApi" type="submit">submit</button>
-    <button (click)="reset()">reset</button>
+    <button *ngIf="needApi" type="submit">Búsqueda</button>
+    <button *ngIf="!myForm.pristine" (click)="reset()" type="button">
+      Reset
+    </button>
   </form>
 
   <span></span>

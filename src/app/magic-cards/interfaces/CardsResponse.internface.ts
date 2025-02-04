@@ -2,6 +2,10 @@ export interface CardsResponse {
   cards: Card[];
 }
 
+export interface CardByIdResponse {
+  card: Card;
+}
+
 export interface Card {
   name: string;
   manaCost: string;
@@ -36,8 +40,10 @@ export interface Card {
 
 export enum Color {
   U = 'U',
+  B = 'B',
   W = 'W',
   R = 'R',
+  G = 'G',
 }
 
 export interface ForeignName {
@@ -77,29 +83,31 @@ export interface LegalityElement {
 }
 
 export enum Format {
-  Alchemy = 'Alchemy',
-  Brawl = 'Brawl',
+  Standard = 'Standard',
+  Pioneer = 'Pioneer',
+  Modern = 'Modern',
+  Legacy = 'Legacy',
+  Vintage = 'Vintage',
   Commander = 'Commander',
-  Duel = 'Duel',
+  Oathbreaker = 'Oathbreaker',
+
+  Alchemy = 'Alchemy',
   Explorer = 'Explorer',
+  Historic = 'Historic',
+  Brawl = 'Brawl',
+  Timeless = 'Timeless',
+  Pauper = 'Pauper',
+  Penny = 'Penny',
+
+  Duel = 'Duel',
   Future = 'Future',
   Gladiator = 'Gladiator',
-  Historic = 'Historic',
   Historicbrawl = 'Historicbrawl',
-  Legacy = 'Legacy',
-  Modern = 'Modern',
-  Oathbreaker = 'Oathbreaker',
   Oldschool = 'Oldschool',
-  Pauper = 'Pauper',
   Paupercommander = 'Paupercommander',
-  Penny = 'Penny',
-  Pioneer = 'Pioneer',
   Predh = 'Predh',
   Premodern = 'Premodern',
-  Standard = 'Standard',
   Standardbrawl = 'Standardbrawl',
-  Timeless = 'Timeless',
-  Vintage = 'Vintage',
 }
 
 export enum LegalityEnum {

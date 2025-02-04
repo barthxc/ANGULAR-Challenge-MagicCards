@@ -1,8 +1,15 @@
-<div class="container">
+<div>
   <search-cards-form
     [cards]="cards"
     [totalCount]="totalCount"
+    (filteredCards)="this.cards = $event"
+    [backupCards]="backupCards"
   ></search-cards-form>
+
+  <!-- Si tengo una comunicación donde paso un dato de padre a e hijo
+  y lo cambio de hijo a padre an vez de poner 2 lineas de código.
+  Se pued eusar en una sola linea con la siguiente sintaxis:
+  [(cards)]="cards" -->
 
   <div *ngIf="isLoading; else notLoading">
     <loading />
@@ -17,4 +24,10 @@
       ></card>
     </div>
   </ng-template>
+
+  <div class="alert" *ngIf="needApi">
+    <p>No hay resultados en esta búsqueda.</p>
+    <p>¿Quieres hacer una búsqueda nueva?</p>
+    <span>Pulsa el botón de búsqueda</span>
+  </div>
 </div>

@@ -5,8 +5,10 @@ import { enviroments } from 'src/environments/environments';
 import { LoadingService } from './loading.service';
 import {
   Card,
+  CardByIdResponse,
   CardsResponse,
   Color,
+  Rarity,
 } from '../interfaces/CardsResponse.internface';
 
 @Injectable({
@@ -24,7 +26,6 @@ export class CardsService {
   // public filterCards!: Card[];
   private _needApi = new BehaviorSubject<boolean>(false);
   private cards: Card[] = [];
-  private toFilterCards: Card[] = [];
 
   needApi$ = this._needApi.asObservable();
 
@@ -58,17 +59,70 @@ export class CardsService {
 
   // Observable<{cards:Card[], totalCount:string|null}>
 
-  getCardsWithImages(
+  // getCardsWithImages(
+  //   minCount: number = 100,
+  //   page: number = 1,
+  //   accumulatedCards: Card[] = []
+  // ): Observable<{ cards: Card[]; totalCount: string | null }> {
+  //   this.loadingService.setLoading(true);
+
+  //   return this.http
+  //     .get<CardsResponse>(`${this.baseUrl}?page=${page}`, {
+  //       observe: 'response',
+  //     })
+  //     .pipe(
+  //       map((response) => {
+  //         const newCards = response.body!.cards.filter((card) =>
+  //           card.imageUrl ? true : false
+  //         );
+  //         const updatedCards = [...accumulatedCards, ...newCards];
+  //         const totalCount = response.headers.get('Total-Count');
+
+  //         return { updatedCards, totalCount };
+  //       }),
+  //       switchMap(({ updatedCards, totalCount }) => {
+  //         if (updatedCards.length >= minCount) {
+  //           this.loadingService.setLoading(false);
+  //           this.cards = updatedCards;
+  //           return of({ cards: updatedCards, totalCount });
+  //           //TODO: Filtrar el resultdo que es la suma de ambas peticiones para que solo devuelvan 100
+  //         } else {
+  //           return this.getCardsWithImages(minCount, page + 1, updatedCards);
+  //         }
+  //       })
+  //     );
+  // }
+
+  getCards(
+    filter: {
+      name?: string;
+      colorIdentity?: string;
+      cmc?: string;
+    } = {},
+    isFiltered: boolean = false,
     minCount: number = 100,
     page: number = 1,
     accumulatedCards: Card[] = []
   ): Observable<{ cards: Card[]; totalCount: string | null }> {
     this.loadingService.setLoading(true);
+    const { cmc = '', colorIdentity = '', name = '' } = filter;
 
+    const sanitizeFilter = {
+      name: name.trim() ? name.trim() : '',
+      cmc: cmc ? cmc : '',
+      colorIdentity: colorIdentity.trim() ? colorIdentity.trim() : '',
+    };
+
+    // encodeURIComponent para pasar parámetros seguros. Por ejemplo un texto con "&""
     return this.http
-      .get<CardsResponse>(`${this.baseUrl}?page=${page}`, {
-        observe: 'response',
-      })
+      .get<CardsResponse>(
+        `${this.baseUrl}?page=${page}&name=${encodeURIComponent(
+          sanitizeFilter.name
+        )}&colorIdentity=${encodeURIComponent(
+          sanitizeFilter.colorIdentity
+        )}&cmc=${encodeURIComponent(sanitizeFilter.cmc)}`,
+        { observe: 'response' }
+      )
       .pipe(
         map((response) => {
           const newCards = response.body!.cards.filter((card) =>
@@ -76,30 +130,65 @@ export class CardsService {
           );
           const updatedCards = [...accumulatedCards, ...newCards];
           const totalCount = response.headers.get('Total-Count');
+          if (response.body!.cards.length > 0) {
+            this._needApi.next(false);
+          }
 
           return { updatedCards, totalCount };
         }),
         switchMap(({ updatedCards, totalCount }) => {
-          if (updatedCards.length >= minCount) {
+          if (isFiltered) {
             this.loadingService.setLoading(false);
+            this.cards = updatedCards;
             return of({ cards: updatedCards, totalCount });
-            //TODO: Filtrar el resultdo que es la suma de ambas peticiones para que solo devuelvan 100
           } else {
-            return this.getCardsWithImages(minCount, page + 1, updatedCards);
+            if (updatedCards.length >= minCount) {
+              this.loadingService.setLoading(false);
+              this.cards = updatedCards;
+
+              return of({ cards: updatedCards, totalCount });
+            } else {
+              return this.getCards(
+                filter,
+                false,
+                minCount,
+                page + 1,
+                updatedCards
+              );
+            }
           }
         })
       );
   }
 
-  //TODO: Retornar los datos.
-  //! Es mejor usar varios BehaviorSubcriber porque es demasiado verboso crear llamadas de un lado a otro con subscribers
+  getCardById(id: string): Observable<Card> {
+    this.loadingService.setLoading(true);
+    return this.http.get<CardByIdResponse>(`${this.baseUrl}${id}`).pipe(
+      map((data) => {
+        this.loadingService.setLoading(false);
+        return data.card;
+      })
+    );
+  }
+
   filterCards(filter: {
     name: string;
     colorIdentity: string;
     cmc: string;
     order: '' | 'ASC' | 'DESC';
-  }): void {
+  }): Observable<Card[]> {
     const { cmc, colorIdentity, name, order } = filter;
+
+    //Creamos el orden correcto de ordenación:
+    //! REVISAR - No aclarado :(
+    const rarityOrder: Record<Rarity, number> = {
+      [Rarity.BasicLand]: 0,
+      [Rarity.Common]: 1,
+      [Rarity.Uncommon]: 2,
+      [Rarity.Rare]: 3,
+      [Rarity.MythicRare]: 4,
+      [Rarity.Special]: 5,
+    };
 
     const filtered = this.cards.filter((card) => {
       const matchesName = name
@@ -115,15 +204,20 @@ export class CardsService {
 
     if (filtered.length === 0) {
       this._needApi.next(true);
+    } else {
+      this._needApi.next(false);
     }
 
-    //TODO:  this._filteredCards.next(filtered);
-  }
+    if (order) {
+      //! REVISAR - No aclarado
+      filtered.sort((a, b) => {
+        const rarityA = rarityOrder[a.rarity as Rarity] ?? 0;
+        const rarityB = rarityOrder[b.rarity as Rarity] ?? 0;
 
-  searchCards(filter: {
-    name: string;
-    colorIdentity: string;
-    cmc: string;
-    order: '' | 'ASC' | 'DESC';
-  }): void {}
+        return order === 'ASC' ? rarityA - rarityB : rarityB - rarityA;
+      });
+    }
+
+    return of(filtered);
+  }
 }

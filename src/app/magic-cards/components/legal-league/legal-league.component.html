@@ -1,0 +1,10 @@
+<div class="league">
+  <div *ngFor="let item of legalities">
+    <div class="format">
+      <span [ngClass]="item.legality === 'Legal' ? 'legal' : 'ilegal'">
+        {{ item.legality | uppercase }}</span
+      >
+      <span>{{ item.format }}</span>
+    </div>
+  </div>
+</div>

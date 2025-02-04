@@ -10,6 +10,12 @@ body {
 }
 
 /*TODO: evualuate*/
-/* .container {
-  padding: 0rem 5rem 0rem 5rem;
-} */
+
+/* tengo que bajarlo un pogo era 25 25 */
+.container {
+  padding: 2rem 3rem 2rem 3rem;
+}
+
+.separator {
+  border-bottom: 2px solid #cac6d0;
+}

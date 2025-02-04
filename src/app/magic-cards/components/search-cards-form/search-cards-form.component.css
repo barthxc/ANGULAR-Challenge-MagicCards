@@ -7,10 +7,6 @@
   color: #a88ac1;
 }
 
-.separator {
-  border-bottom: 2px solid #cac6d0;
-}
-
 .count {
   padding: 0.5rem 5rem;
   color: #a88ac1;
@@ -23,12 +19,21 @@ form {
 }
 
 input,
-select {
+select,
+button {
   font-size: 20px;
   color: #896cb5;
   border: 2px solid #896cb5;
   border-radius: 5%;
   padding: 0rem 0.5rem;
+}
+
+button {
+  cursor: pointer;
+}
+button:hover {
+  color: white;
+  background-color: #564472;
 }
 
 .name {
@@ -47,9 +52,10 @@ select {
   max-width: 120px;
 }
 
-@media (max-width: 676px) {
+@media (max-width: 800px) {
   .form-container,
   .form-container form {
     flex-direction: column;
+    width: 100%;
   }
 }

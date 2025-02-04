@@ -11,6 +11,7 @@ import { LoadingComponent } from './components/loading/loading.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { CardComponent } from './components/card/card.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { LegalLeagueComponent } from './components/legal-league/legal-league.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     LoadingComponent,
     MenuComponent,
     CardComponent,
+    LegalLeagueComponent,
   ],
   imports: [CommonModule, MagicCardsRoutingModule, ReactiveFormsModule],
 })

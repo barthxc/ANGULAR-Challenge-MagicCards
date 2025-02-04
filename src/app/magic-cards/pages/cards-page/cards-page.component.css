@@ -14,6 +14,16 @@ card {
   max-width: 220px;
 }
 
+.alert {
+  font-size: 30px;
+  text-align: center;
+  padding: 1rem 5rem;
+}
+
+.alert span {
+  color: #896cb5;
+}
+
 @media (max-width: 1200px) {
   .card-list {
     grid-template-columns: repeat(3, 1fr);

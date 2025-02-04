@@ -1,0 +1,26 @@
+.league {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  padding: 5px;
+  gap: 3px;
+}
+
+.format {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 3px;
+  font-size: 14px;
+}
+
+.legal {
+  background-color: #75986e;
+  color: white;
+  padding: 4px 8px;
+}
+.ilegal {
+  background-color: #aeadae;
+  color: white;
+  text-align: center;
+}

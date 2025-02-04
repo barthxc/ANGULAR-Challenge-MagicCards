@@ -1,0 +1,19 @@
+.card-and-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+}
+
+.languaje-button {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  gap: 5px;
+  padding: 5px 2px;
+}
+.languaje-button button {
+  cursor: pointer;
+  padding: 2px 5px;
+  color: white;
+  background-color: #2a2539;
+}

@@ -3,8 +3,23 @@
   border-radius: 5%;
 } */
 
+.card {
+  z-index: 1000;
+}
+
+.card img {
+  width: 300px;
+}
+
 img {
   cursor: pointer;
+}
+
+.all-card-container {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
 }
 
 .info {
@@ -17,4 +32,32 @@ img {
   color: white;
   max-width: 223px;
   bottom: 15px;
+  left: 28px;
+}
+
+.data {
+  max-width: 350px;
+  min-height: 410px;
+  background-color: white;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  border-radius: 5px;
+  transform: translateX(-1.3rem);
+  padding: 0px 0px 0px 25px;
+}
+
+.data p {
+  padding: 8px;
+  font-size: 16px;
+}
+
+#ilustrator {
+  font-size: 12px;
+  padding: 10px 5px;
+}
+
+@media (max-width: 630px) {
+  .all-card-container {
+    flex-direction: column;
+  }
 }
