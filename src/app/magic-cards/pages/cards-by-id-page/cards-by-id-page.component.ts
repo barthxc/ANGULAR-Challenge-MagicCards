@@ -2,8 +2,12 @@ import { ActivatedRoute } from '@angular/router';
 import { CardsService } from './../../services/cards.service';
 import { Component, OnInit } from '@angular/core';
 import { LoadingService } from '../../services/loading.service';
-import { map, switchMap } from 'rxjs';
-import { Card } from '../../interfaces/CardsResponse.internface';
+import { switchMap } from 'rxjs';
+import { CardAndLanguage } from '../../interfaces/CardById.interface';
+import {
+  ForeignName,
+  Language,
+} from '../../interfaces/CardsResponse.internface';
 
 @Component({
   templateUrl: './cards-by-id-page.component.html',
@@ -17,18 +21,9 @@ export class CardsByIdPageComponent implements OnInit {
   ) {}
 
   public isLoading!: boolean;
-  public card!: Card;
-
-  selectLanguaje(algo: any) {
-    console.log('algo', algo);
-    console.log(this.card.foreignNames);
-    let lng = this.card.foreignNames!.find((test) => test.language === algo);
-
-    console.log('lgn', lng);
-
-    this.card.name = lng!.name;
-    this.card.text = lng!.text;
-  }
+  public card!: CardAndLanguage;
+  public defaultLanguage!: ForeignName;
+  public foreignNames!: ForeignName[];
 
   ngOnInit(): void {
     this.loadingService.isLoading$.subscribe((isLoading) => {
@@ -38,8 +33,44 @@ export class CardsByIdPageComponent implements OnInit {
     this.activatedRoute.params
       .pipe(switchMap(({ id }) => this.cardsService.getCardById(id)))
       .subscribe((card) => {
-        console.log(card.imageUrl);
-        this.card = card;
+        const englishForeingName: ForeignName = {
+          name: card.name,
+          text: card.text,
+          imageUrl: card.imageUrl,
+          language: Language.English,
+          type: card.type,
+        };
+
+        card.foreignNames = [englishForeingName, ...card.foreignNames];
+
+        this.foreignNames = card.foreignNames;
+
+        const defaultLanguage = card.foreignNames!.find(
+          (foreignName) => foreignName.language === Language.English
+        );
+
+        if (defaultLanguage) {
+          this.defaultLanguage = defaultLanguage;
+          this.card = {
+            number: card.number,
+            artist: card.artist,
+            setName: card.setName,
+            set: card.set,
+            rarity: card.rarity,
+            foreignName: defaultLanguage,
+            legalities: card.legalities,
+          };
+        }
       });
+  }
+
+  selectLanguage(language: string) {
+    const newLanguage = this.foreignNames.find(
+      (foreignName) => foreignName.language === language
+    );
+
+    if (newLanguage) {
+      this.card.foreignName = newLanguage;
+    }
   }
 }

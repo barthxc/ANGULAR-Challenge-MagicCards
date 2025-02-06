@@ -1,27 +1,31 @@
 <div *ngIf="isOnlyCard; else cardArray">
   <div class="all-card-container">
     <div class="card">
-      <img [src]="card.imageUrl" [alt]="card.name" />
+      <img
+        [src]="cardById.foreignName.imageUrl"
+        [alt]="cardById.foreignName.name"
+      />
       <div class="info">
-        <p>{{ card.subtypes }}</p>
-        <p>{{ card.type }}</p>
-        <p>{{ card.setName }}</p>
+        <p>{{ cardById.foreignName.type }}</p>
+        <p>{{ cardById.setName }}</p>
       </div>
     </div>
 
     <div class="data">
       <p class="separator">
-        {{ card.name }}
+        {{ cardById.foreignName.name }}
       </p>
       <p class="separator">
-        {{ card.name }}
+        {{ cardById.foreignName.type }}
       </p>
       <p class="separator">
-        {{ card.text }}
+        {{ cardById.foreignName.text }}
       </p>
-      <p class="separator" id="ilustrator">Illustrated by {{ card.artist }}</p>
+      <p class="separator" id="ilustrator">
+        Illustrated by {{ cardById.artist }}
+      </p>
 
-      <legal-formats [legalities]="card.legalities"></legal-formats>
+      <legal-formats [legalities]="cardById.legalities"></legal-formats>
     </div>
   </div>
 </div>
@@ -30,14 +34,14 @@
   <!-- CARTA PREPARADA PARA ESTAR EN GRUPO -->
   <div>
     <img
-      [src]="card.imageUrl"
-      [alt]="card.name"
-      [routerLink]="['/cards', card.id]"
+      [src]="arrayCards.imageUrl"
+      [alt]="arrayCards.name"
+      [routerLink]="['/cards', arrayCards.id]"
     />
     <div class="info">
-      <p>{{ card.subtypes }}</p>
-      <p>{{ card.type }}</p>
-      <p>{{ card.setName }}</p>
+      <p>{{ arrayCards.subtypes }}</p>
+      <p>{{ arrayCards.type }}</p>
+      <p>{{ arrayCards.setName }}</p>
     </div>
   </div>
 </ng-template>

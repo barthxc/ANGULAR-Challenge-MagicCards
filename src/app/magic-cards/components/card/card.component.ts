@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Card } from '../../interfaces/CardsResponse.internface';
+import { CardAndLanguage, CardById } from '../../interfaces/CardById.interface';
 
 @Component({
   selector: 'card',
@@ -9,5 +10,7 @@ import { Card } from '../../interfaces/CardsResponse.internface';
 export class CardComponent {
   @Input() isOnlyCard: boolean = false;
 
-  @Input() card!: Card;
+  @Input() arrayCards!: Card;
+
+  @Input() cardById!: CardAndLanguage;
 }

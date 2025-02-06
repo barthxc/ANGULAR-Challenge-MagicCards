@@ -17,7 +17,7 @@ export interface Card {
   subtypes?: string[];
   rarity: Rarity;
   set: Set;
-  setName: SetName;
+  setName: string;
   text: string;
   artist: string;
   number: string;
@@ -25,9 +25,9 @@ export interface Card {
   toughness?: string;
   layout: Layout;
   multiverseid?: string;
-  imageUrl?: string;
+  imageUrl: string;
   variations?: string[];
-  foreignNames?: ForeignName[];
+  foreignNames: ForeignName[];
   printings: string[];
   originalText?: string;
   originalType?: string;
@@ -50,11 +50,8 @@ export interface ForeignName {
   name: string;
   text: string;
   type: string;
-  flavor: null | string;
   imageUrl: string;
   language: Language;
-  identifiers: Identifiers;
-  multiverseid: number;
 }
 
 export interface Identifiers {
@@ -63,6 +60,8 @@ export interface Identifiers {
 }
 
 export enum Language {
+  English = 'English',
+
   ChineseSimplified = 'Chinese Simplified',
   French = 'French',
   German = 'German',
@@ -131,10 +130,6 @@ export interface Ruling {
 
 export enum Set {
   The10E = '10E',
-}
-
-export enum SetName {
-  TenthEdition = 'Tenth Edition',
 }
 
 export enum Type {

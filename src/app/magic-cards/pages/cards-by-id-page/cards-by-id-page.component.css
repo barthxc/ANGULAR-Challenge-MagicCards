@@ -5,16 +5,42 @@
   justify-content: center;
 }
 
+.short-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  color: white;
+
+  background-color: #2a2539;
+  padding: 0.5rem;
+}
+
 .languaje-button {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   flex-direction: row;
+  justify-content: start;
+  align-items: center;
   gap: 5px;
-  padding: 5px 2px;
+  padding: 5px 1px;
 }
-.languaje-button button {
+
+.buttons-language {
   cursor: pointer;
   padding: 2px 5px;
   color: white;
   background-color: #2a2539;
+}
+
+.selected {
+  background-color: #7a6ba7;
+}
+
+@media (max-width: 780px) {
+  .card-and-buttons {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 }

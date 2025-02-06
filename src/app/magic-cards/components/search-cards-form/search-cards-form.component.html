@@ -37,10 +37,14 @@
       Reset
     </button>
   </form>
-
-  <span></span>
 </div>
 
 <div class="count separator">
   <span class="">{{ cards.length }} de {{ totalCount }}</span>
+</div>
+
+<div class="pagination-btn">
+  <button (click)="pagination('prev')">⏪</button>
+  <span>{{ actualPage }}</span>
+  <button (click)="pagination('next')">⏩</button>
 </div>

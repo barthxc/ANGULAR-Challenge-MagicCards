@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Card, Color } from '../../interfaces/CardsResponse.internface';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CardsService } from '../../services/cards.service';
+import { Filter } from '../../interfaces/Filter.interface';
 
 @Component({
   selector: 'search-cards-form',
@@ -12,12 +13,15 @@ export class SearchCardsFormComponent implements OnInit {
   constructor(private fb: FormBuilder, private cardsService: CardsService) {}
   @Input() cards: Card[] = [];
   @Input() totalCount: string | null = '0';
-  @Input() backupCards: Card[] = [];
-  @Output() filteredCards = new EventEmitter<Card[]>();
+  @Input() actualPage!: number;
 
-  colors = Object.values(Color);
+  @Output() filters = new EventEmitter<Filter>();
+  @Output() resetData = new EventEmitter();
+  @Output() searchData = new EventEmitter<Filter>();
+  @Output() paginationData = new EventEmitter<'prev' | 'next'>();
 
   public needApi: boolean = false;
+  public colors = Object.values(Color);
 
   public myForm: FormGroup = this.fb.group({
     name: [''],
@@ -33,46 +37,12 @@ export class SearchCardsFormComponent implements OnInit {
 
     // Capturar el evento valueChanges
     this.myForm.valueChanges.subscribe((changes) => {
-      //!!! Le paso al padre solo los filtros. Que el padre o el servicio maneje la lógica de negocio
-      this.cardsService
-        .filterCards(this.myForm.value)
-        .subscribe((filteredCards) => {
-          this.filteredCards.emit(filteredCards);
-        });
+      this.filters.emit(this.myForm.value);
     });
-
-    // this.myForm
-    //   .get('name')!
-    //   .valueChanges.pipe(debounceTime(500), distinctUntilChanged())
-    //   .subscribe(() => {
-    //     console.log(this.myForm.value);
-    //     //ejecución del filtrado
-    //   });
-
-    //! forma
-    // .pipe(
-    //   startWith(this.myForm.value), // Emite el valor inicial del formulario
-    //   pairwise(), // Compara el valor anterior con el valor actual
-    //   debounce(([previous, current]) => {
-    //     // Aplica debounce solo si el valor de 'name' ha cambiado
-    //     console.log(
-    //       previous.name !== current.name
-    //         ? 'ha cambiado y te meto timer'
-    //         : 'busco de una'
-    //     );
-    //     return previous.name !== current.name ? timer(5000) : timer(0);
-    //   })
-    // )
   }
 
   searchCards() {
-    this.cardsService
-      .getCards(this.myForm.value, true)
-      .subscribe(({ cards, totalCount }) => {
-        this.cards = cards;
-        this.totalCount = totalCount;
-        this.filteredCards.emit(cards);
-      });
+    this.searchData.emit(this.myForm.value);
   }
 
   reset(): void {
@@ -83,6 +53,16 @@ export class SearchCardsFormComponent implements OnInit {
       order: '',
     });
 
-    this.filteredCards.emit(this.backupCards);
+    this.resetData.emit();
+  }
+
+  pagination(action: 'prev' | 'next') {
+    this.paginationData.emit(action);
+    this.myForm.reset({
+      name: '',
+      cmc: '',
+      colorIdentity: '',
+      order: '',
+    });
   }
 }

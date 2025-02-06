@@ -10,6 +10,7 @@ import {
   Color,
   Rarity,
 } from '../interfaces/CardsResponse.internface';
+import { Filter } from '../interfaces/Filter.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -165,18 +166,39 @@ export class CardsService {
     this.loadingService.setLoading(true);
     return this.http.get<CardByIdResponse>(`${this.baseUrl}${id}`).pipe(
       map((data) => {
+        // if (!data.card) {
+        //   this.loadingService.setLoading(false);
+        //   //TODO : move to other page
+        //   throw new Error('No card');
+        // }
+
+        // //transformación del data para la interface CardById
+        // const englishLanguage: transformatedForeignName = {
+        //   name: data.card.name,
+        //   text: data.card.text,
+        //   type: data.card.type,
+        //   imageUrl: data.card.imageUrl ?? '',
+        //   language: Language.English,
+        // };
+
+        // const foreignNames = data.card.foreignNames
+        //   ? [...data.card.foreignNames, englishLanguage]
+        //   : [englishLanguage];
+
+        // const cardById: CardById = {
+        //   artist: data.card.artist,
+        //   number: data.card.number,
+        //   foreignName: foreignNames,
+        // };
+
         this.loadingService.setLoading(false);
+
         return data.card;
       })
     );
   }
 
-  filterCards(filter: {
-    name: string;
-    colorIdentity: string;
-    cmc: string;
-    order: '' | 'ASC' | 'DESC';
-  }): Observable<Card[]> {
+  filterCards(filter: Filter): Observable<Card[]> {
     const { cmc, colorIdentity, name, order } = filter;
 
     //Creamos el orden correcto de ordenación:

@@ -1,0 +1,31 @@
+footer {
+  background-color: black;
+  padding: 2rem 3rem 2rem 3rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1rem;
+
+  color: white;
+}
+
+footer p {
+  margin-bottom: 0.5rem;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3;
+}
+
+a {
+  color: white;
+}
+
+@media (max-width: 720px) {
+  footer {
+    flex-wrap: wrap;
+  }
+}

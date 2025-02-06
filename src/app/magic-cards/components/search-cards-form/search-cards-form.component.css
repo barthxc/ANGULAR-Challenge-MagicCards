@@ -52,6 +52,14 @@ button:hover {
   max-width: 120px;
 }
 
+.pagination-btn {
+  padding: 1rem 0rem 0rem 0rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
 @media (max-width: 800px) {
   .form-container,
   .form-container form {

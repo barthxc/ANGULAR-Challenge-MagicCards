@@ -5,19 +5,30 @@
 <ng-template class="card-content" #notLoading>
   <div class="container">
     <div class="card-and-buttons">
-      <card [isOnlyCard]="true" [card]="card"></card>
+      <card [isOnlyCard]="true" [cardById]="card"></card>
 
       <div>
-        <div class="flex-col">
-          <p>{{ card.setName + "(" + card.set + ")" }}</p>
+        <div class="short-info">
+          <p>{{ card.setName + " - " + card.set }}</p>
           <p>
-            {{ "#" + card.number + card.rarity }}
+            {{
+              "#" +
+                card.number +
+                " " +
+                card.rarity +
+                " " +
+                card.foreignName.language
+            }}
           </p>
         </div>
         <div class="languaje-button">
           <button
-            (click)="selectLanguaje(item.language)"
-            *ngFor="let item of card.foreignNames"
+            (click)="selectLanguage(item.language)"
+            *ngFor="let item of foreignNames"
+            class="buttons-language"
+            [ngClass]="{
+              selected: item.language === card.foreignName.language
+            }"
           >
             {{ item.language | uppercase | slice : 0 : 2 }}
           </button>

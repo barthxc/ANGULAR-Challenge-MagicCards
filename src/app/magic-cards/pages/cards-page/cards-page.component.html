@@ -2,8 +2,11 @@
   <search-cards-form
     [cards]="cards"
     [totalCount]="totalCount"
-    (filteredCards)="this.cards = $event"
-    [backupCards]="backupCards"
+    (filters)="filterCards($event)"
+    (resetData)="resetData()"
+    (searchData)="searchData($event)"
+    (paginationData)="evaluatePagination($event)"
+    [actualPage]="page"
   ></search-cards-form>
 
   <!-- Si tengo una comunicación donde paso un dato de padre a e hijo
@@ -20,7 +23,7 @@
       <card
         *ngFor="let card of cards"
         [isOnlyCard]="false"
-        [card]="card"
+        [arrayCards]="card"
       ></card>
     </div>
   </ng-template>
